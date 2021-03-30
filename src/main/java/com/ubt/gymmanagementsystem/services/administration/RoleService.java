@@ -17,8 +17,22 @@ public class RoleService {
         return roleRepository.findAll();
     }
 
+    public Role getById(Long id) {
+        return roleRepository.findById(id).orElse(null);
+    }
+
     public boolean save(Role role) {
         if(role.getName() != null && !role.getName().trim().isEmpty() && roleRepository.findByName(role.getName()) == null){
+            roleRepository.save(role);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public boolean update(Role role) {
+        if(role.getName() != null && !role.getName().trim().isEmpty() && roleRepository.findByName(role.getName()) != null){
             roleRepository.save(role);
             return true;
         }

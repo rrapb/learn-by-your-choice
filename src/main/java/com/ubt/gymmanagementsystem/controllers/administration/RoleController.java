@@ -1,6 +1,8 @@
 package com.ubt.gymmanagementsystem.controllers.administration;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.ubt.gymmanagementsystem.entities.administration.Permission;
 import com.ubt.gymmanagementsystem.entities.administration.Role;
@@ -12,9 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class RoleController {
@@ -38,15 +38,33 @@ public class RoleController {
         return "administration/roles/addRole";
     }
 
-    @PostMapping(value = "/addRole", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/addRole", produces = MediaType.APPLICATION_JSON_VALUE)
     @PostAuthorize("hasAuthority('WRITE_ROLE')")
-    public String addRole(@RequestBody RoleDAO roleDAO, Model model){
-
+    public @ResponseBody Map addRole(@ModelAttribute RoleDAO roleDAO){
         Role role = Role.builder().name(roleDAO.getName()).permissions(preparePermissions(roleDAO)).build();
         boolean saved = roleService.save(role);
-        model.addAttribute("isSaved", saved);
-        model.addAttribute("roles", roleService.getAll());
-        return "administration/roles/roles";
+        Map map = new HashMap();
+        map.put("isSaved", saved);
+        return map;
+    }
+
+    @GetMapping("/editRole/{id}")
+    @PostAuthorize("hasAuthority('WRITE_ROLE')")
+    public String editRole(@PathVariable Long id, Model model){
+
+        Role role = roleService.getById(id);
+        model.addAttribute("role", role);
+        return "administration/roles/editRole";
+    }
+
+    @PostMapping(value = "/editRole", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostAuthorize("hasAuthority('WRITE_ROLE')")
+    public @ResponseBody Map editRole(@ModelAttribute RoleDAO roleDAO){
+        Role role = Role.builder().name(roleDAO.getName()).permissions(preparePermissions(roleDAO)).build();
+        boolean saved = roleService.update(role);
+        Map map = new HashMap();
+        map.put("isSaved", saved);
+        return map;
     }
 
     private ArrayList<Permission> preparePermissions(final RoleDAO roleDAO) {

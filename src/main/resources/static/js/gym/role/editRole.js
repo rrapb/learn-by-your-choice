@@ -1,16 +1,16 @@
 $(document).ready(function() {
     $("#submitButton").click(function(event) {
-        console.log("addRole");
+        console.log("editRole");
         event.preventDefault();
         $.ajax({
             type: "POST",
-            url: "/addRole",
-            data: $("#addRole").serialize(),
+            url: "/editRole",
+            data: $("#editRole").serialize(),
             success: function (result) {
                 if(result.isSaved){
                     $(".alert-success").removeAttr('hidden');
                     $(".alert-danger").attr('hidden','');
-                    $("#addRole")[0].reset();
+                    $("#editRole")[0].reset();
                 }
                 else{
                     $(".alert-danger").removeAttr('hidden');
