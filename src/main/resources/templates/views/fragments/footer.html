@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+    <div th:fragment="footer">
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; GymMS <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}"/></span>
+                </div>
+            </div>
+        </footer>
+        <!-- End of Footer -->
+    </div>
+</html>
