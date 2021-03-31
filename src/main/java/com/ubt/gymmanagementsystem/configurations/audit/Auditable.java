@@ -22,11 +22,11 @@ import lombok.Data;
 public class Auditable<T> {
 
     @CreatedBy
-    @Column(name = "created_by")
+    @Column(name = "created_by", updatable = false)
     private T createdBy;
 
     @CreatedDate
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 

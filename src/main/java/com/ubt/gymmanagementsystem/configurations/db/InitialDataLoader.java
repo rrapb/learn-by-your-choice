@@ -124,6 +124,7 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
         if (role == null) {
             role = new Role(name);
             role.setPermissions(permissions);
+            role.setEnabled(true);
             roleRepository.save(role);
         }
         return role;

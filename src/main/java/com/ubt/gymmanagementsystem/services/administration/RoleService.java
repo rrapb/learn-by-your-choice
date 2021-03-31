@@ -32,7 +32,18 @@ public class RoleService {
     }
 
     public boolean update(Role role) {
-        if(role.getName() != null && !role.getName().trim().isEmpty() && roleRepository.findByName(role.getName()) != null){
+        if(role.getName() != null && !role.getName().trim().isEmpty() && roleRepository.existsById(role.getId())){
+            roleRepository.save(role);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public boolean delete(Role role) {
+        if(roleRepository.existsById(role.getId()) && role.isEnabled()){
+            role.setEnabled(false);
             roleRepository.save(role);
             return true;
         }

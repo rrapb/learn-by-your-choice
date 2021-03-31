@@ -53,18 +53,29 @@ public class RoleController {
     public String editRole(@PathVariable Long id, Model model){
 
         Role role = roleService.getById(id);
-        model.addAttribute("role", role);
+        model.addAttribute("roleDAO", prepareRoleDAO(role));
         return "administration/roles/editRole";
     }
 
     @PostMapping(value = "/editRole", produces = MediaType.APPLICATION_JSON_VALUE)
     @PostAuthorize("hasAuthority('WRITE_ROLE')")
     public @ResponseBody Map editRole(@ModelAttribute RoleDAO roleDAO){
-        Role role = Role.builder().name(roleDAO.getName()).permissions(preparePermissions(roleDAO)).build();
+        Role role = Role.builder().id(roleDAO.getId()).name(roleDAO.getName()).permissions(preparePermissions(roleDAO)).build();
         boolean saved = roleService.update(role);
         Map map = new HashMap();
         map.put("isSaved", saved);
         return map;
+    }
+
+    @GetMapping("/deleteRole/{id}")
+    @PostAuthorize("hasAuthority('WRITE_ROLE')")
+    public String deleteRole(@PathVariable Long id, Model model){
+
+        Role role = roleService.getById(id);
+        boolean deleted = roleService.delete(role);
+        model.addAttribute("deleted", deleted);
+        model.addAttribute("roles", roleService.getAll());
+        return "administration/roles/roles";
     }
 
     private ArrayList<Permission> preparePermissions(final RoleDAO roleDAO) {
@@ -85,5 +96,28 @@ public class RoleController {
             permissions.add(permissionRepository.findByName("WRITE_PERSON"));
 
         return permissions;
+    }
+
+    private RoleDAO prepareRoleDAO(final Role role) {
+
+        RoleDAO roleDAO = new RoleDAO();
+        roleDAO.setId(role.getId());
+        roleDAO.setName(role.getName());
+        for(Permission permission: role.getPermissions()){
+            if (permission.getName().equals("READ_ROLE"))
+                roleDAO.setViewRoles(true);
+            else if (permission.getName().equals("WRITE_ROLE"))
+                roleDAO.setAddRoles(true);
+            else if (permission.getName().equals("READ_USER"))
+                roleDAO.setViewUsers(true);
+            else if (permission.getName().equals("WRITE_USER"))
+                roleDAO.setAddUsers(true);
+            else if (permission.getName().equals("READ_PERSON"))
+                roleDAO.setViewPersons(true);
+            else if (permission.getName().equals("WRITE_PERSON"))
+                roleDAO.setAddPersons(true);
+        }
+
+        return roleDAO;
     }
 }

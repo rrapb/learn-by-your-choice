@@ -42,8 +42,11 @@ public class Role extends Auditable<String> {
     @Column
     private Long id;
 
-    @Column
+    @Column(unique = true)
     private String name;
+
+    @Column
+    private boolean enabled;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "role")

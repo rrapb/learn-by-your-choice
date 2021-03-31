@@ -23,32 +23,33 @@
             </div>
             <div class="card-body">
                 <form id="editRole">
+                    <input id="id" name="id" th:value="${roleDAO.getId()}" hidden="">
                     <div class="form-group">
-                        <input id="name" name="name" class="form-control form-control-user" placeholder="Enter Role name..." th:value="${role.getName()}">
+                        <input id="name" name="name" class="form-control form-control-user" placeholder="Enter Role name..." th:value="${roleDAO.getName()}">
                     </div>
                     <div class="form-group">
                         <div class="form-check-inline">
                             <div class="form-check">
 
-                                <input class="form-check-input" type="checkbox" value="true" id="viewRoles" name="viewRoles">
+                                <input class="form-check-input" type="checkbox" value="true" id="viewRoles" name="viewRoles" th:checked="${roleDAO.isViewRoles()}">
                                 <label class="form-check-label" for="viewRoles">
                                     View Roles
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="true" id="addRoles" name="addRoles">
+                                <input class="form-check-input" type="checkbox" value="true" id="addRoles" name="addRoles" th:checked="${roleDAO.isAddRoles()}">
                                 <label class="form-check-label" for="addRoles">
                                     Add & Edit Roles
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="true" id="viewUsers" name="viewUsers">
+                                <input class="form-check-input" type="checkbox" value="true" id="viewUsers" name="viewUsers" th:checked="${roleDAO.isViewUsers()}">
                                 <label class="form-check-label" for="viewUsers">
                                     View Users
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="true" id="addUsers" name="addUsers">
+                                <input class="form-check-input" type="checkbox" value="true" id="addUsers" name="addUsers" th:checked="${roleDAO.isAddUsers()}">
                                 <label class="form-check-label" for="addUsers">
                                     Add & Edit Users
                                 </label>
@@ -58,13 +59,13 @@
                     <div class="form-group">
                         <div class="form-check-inline">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="true" id="viewPersons" name="viewPersons">
+                                <input class="form-check-input" type="checkbox" value="true" id="viewPersons" name="viewPersons" th:checked="${roleDAO.isViewPersons()}">
                                 <label class="form-check-label" for="viewPersons">
                                     View Persons
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="true" id="addPersons" name="addPersons">
+                                <input class="form-check-input" type="checkbox" value="true" id="addPersons" name="addPersons" th:checked="${roleDAO.isAddPersons()}">
                                 <label class="form-check-label" for="addPersons">
                                     Add & Edit Persons
                                 </label>

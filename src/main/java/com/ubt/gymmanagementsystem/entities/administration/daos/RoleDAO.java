@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RoleDAO {
 
+    private Long id;
     private String name;
     private boolean viewRoles;
     private boolean addRoles;
