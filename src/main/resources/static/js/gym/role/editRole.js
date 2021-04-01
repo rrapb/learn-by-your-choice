@@ -1,22 +1,30 @@
 $(document).ready(function() {
     $("#submitButton").click(function(event) {
-        console.log("editRole");
         event.preventDefault();
+        if(!validate()) {
+            return;
+        }
         $.ajax({
-            type: "POST",
+            type: "PUT",
             url: "/editRole",
             data: $("#editRole").serialize(),
             success: function (result) {
-                if(result.isSaved){
-                    $(".alert-success").removeAttr('hidden');
-                    $(".alert-danger").attr('hidden','');
-                    $("#editRole")[0].reset();
-                }
-                else{
-                    $(".alert-danger").removeAttr('hidden');
-                    $(".alert-success").attr('hidden','');
-                }
+                $("#page-top").html(result);
+            },
+            error: function (result) {
+                console.log(result);
+                $("#alert").removeAttr("hidden");
             }
         });
     });
+
+    function validate() {
+        var name = $("#name").val();
+        if(name == "" || name.length < 3) {
+            $("#alert").removeAttr("hidden");
+            $("#name").addClass("border-bottom-danger");
+            return false;
+        }
+        return true;
+    }
 });

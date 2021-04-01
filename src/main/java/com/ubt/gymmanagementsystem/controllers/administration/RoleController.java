@@ -1,9 +1,8 @@
 package com.ubt.gymmanagementsystem.controllers.administration;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
+import com.ubt.gymmanagementsystem.configurations.exceptions.DatabaseException;
 import com.ubt.gymmanagementsystem.entities.administration.Permission;
 import com.ubt.gymmanagementsystem.entities.administration.Role;
 import com.ubt.gymmanagementsystem.repositories.administration.PermissionRepository;
@@ -15,6 +14,7 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class RoleController {
@@ -40,12 +40,22 @@ public class RoleController {
 
     @PostMapping(value = "/addRole", produces = MediaType.APPLICATION_JSON_VALUE)
     @PostAuthorize("hasAuthority('WRITE_ROLE')")
-    public @ResponseBody Map addRole(@ModelAttribute RoleDAO roleDAO){
-        Role role = Role.builder().name(roleDAO.getName()).permissions(preparePermissions(roleDAO)).build();
-        boolean saved = roleService.save(role);
-        Map map = new HashMap();
-        map.put("isSaved", saved);
-        return map;
+    public ModelAndView addRole(@ModelAttribute RoleDAO roleDAO){
+        try {
+            Role role = Role.builder().name(roleDAO.getName()).permissions(preparePermissions(roleDAO)).enabled(true).build();
+            boolean created = roleService.save(role);
+
+            ModelAndView modelAndView = new ModelAndView("administration/roles/roles");
+            modelAndView.addObject("isCreated", created);
+            modelAndView.addObject("roles", roleService.getAll());
+            return modelAndView;
+        }
+        catch (DatabaseException ex) {
+            ModelAndView modelAndView = new ModelAndView("administration/roles/addRole");
+            modelAndView.addObject("roleDAO", roleDAO);
+            modelAndView.addObject("failed", true);
+            return modelAndView;
+        }
     }
 
     @GetMapping("/editRole/{id}")
@@ -57,23 +67,46 @@ public class RoleController {
         return "administration/roles/editRole";
     }
 
-    @PostMapping(value = "/editRole", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/editRole", produces = MediaType.APPLICATION_JSON_VALUE)
     @PostAuthorize("hasAuthority('WRITE_ROLE')")
-    public @ResponseBody Map editRole(@ModelAttribute RoleDAO roleDAO){
-        Role role = Role.builder().id(roleDAO.getId()).name(roleDAO.getName()).permissions(preparePermissions(roleDAO)).build();
-        boolean saved = roleService.update(role);
-        Map map = new HashMap();
-        map.put("isSaved", saved);
-        return map;
+    public ModelAndView editRole(@ModelAttribute RoleDAO roleDAO){
+        try {
+            Role role = roleService.getById(roleDAO.getId());
+            Role tempRole = Role.builder().id(roleDAO.getId()).name(roleDAO.getName())
+                    .permissions(preparePermissions(roleDAO)).enabled(role.isEnabled()).build();
+            boolean updated = roleService.update(tempRole);
+
+            ModelAndView modelAndView = new ModelAndView("administration/roles/roles");
+            modelAndView.addObject("isUpdated", updated);
+            modelAndView.addObject("roles", roleService.getAll());
+            return modelAndView;
+        }
+        catch (DatabaseException ex) {
+            ModelAndView modelAndView = new ModelAndView("administration/roles/editRole");
+            modelAndView.addObject("roleDAO", roleDAO);
+            modelAndView.addObject("failed", true);
+            return modelAndView;
+        }
     }
 
-    @GetMapping("/deleteRole/{id}")
+    @GetMapping("/disableRole/{id}")
     @PostAuthorize("hasAuthority('WRITE_ROLE')")
-    public String deleteRole(@PathVariable Long id, Model model){
+    public String disableRole(@PathVariable Long id, Model model){
 
         Role role = roleService.getById(id);
-        boolean deleted = roleService.delete(role);
-        model.addAttribute("deleted", deleted);
+        boolean disabled = roleService.disable(role);
+        model.addAttribute("isDisabled", disabled);
+        model.addAttribute("roles", roleService.getAll());
+        return "administration/roles/roles";
+    }
+
+    @GetMapping("/enableRole/{id}")
+    @PostAuthorize("hasAuthority('WRITE_ROLE')")
+    public String enableRole(@PathVariable Long id, Model model){
+
+        Role role = roleService.getById(id);
+        boolean enabled = roleService.enable(role);
+        model.addAttribute("isEnabled", enabled);
         model.addAttribute("roles", roleService.getAll());
         return "administration/roles/roles";
     }
