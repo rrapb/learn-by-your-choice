@@ -45,4 +45,8 @@ public class Person extends Auditable<String> {
     @JsonManagedReference
     @OneToOne(mappedBy = "person")
     private User user;
+
+    @JsonManagedReference
+    @OneToOne(mappedBy = "person")
+    private PersonImage image;
 }

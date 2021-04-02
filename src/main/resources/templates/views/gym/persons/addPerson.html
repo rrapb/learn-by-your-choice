@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{index.html}">
+<section layout:fragment="content">
+    <!-- Page Heading -->
+
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Add Person Form</h1>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row justify-content-center">
+        <div class="col-lg-6 card shadow mb-4">
+
+            <div class="card-header py-3">
+                <div class="col-12 alert alert-danger" th:hidden="${failed == null || !failed}" id="alert">
+                    Person failed to save, name must be unique!
+                </div>
+                <h6 class="m-0 font-weight-bold text-primary">Add person</h6>
+            </div>
+            <div class="card-body">
+                <form id="addPerson" enctype="multipart/form-data" method="POST" action="/addPerson">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="firstName">First Name</label>
+                            <input id="firstName" name="firstName" class="form-control form-control-user" placeholder="Enter Person's first name..." th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="lastName">Last Name</label>
+                            <input id="lastName" name="lastName" class="form-control form-control-user" placeholder="Enter Person's last name..." th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="personalId">Personal ID</label>
+                            <input id="personalId" name="personalId" class="form-control form-control-user" placeholder="Enter Person's personal ID..." th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="birthdate">Birthdate</label>
+                            <input type="date" id="birthDate" name="birthDateString" class="form-control form-control-user" placeholder="Enter Person's birthdate..." th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="genderDiv">Gender</label>
+                            <div id="genderDiv">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="gender" id="male" value="M">
+                                    <label class="form-check-label" for="male">Male</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="gender" id="female" value="F">
+                                    <label class="form-check-label" for="female">Female</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="imageDiv">Image</label>
+                            <div class="input-group" id="imageDiv">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                                </div>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="image" name="image" aria-describedby="inputGroupFileAddon01" accept="image/jpeg, image/png">
+                                    <label class="custom-file-label" for="image">Choose file</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button id="submitButton" class="btn btn-success">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/gym/person/addPerson.js}"></script>
+</th:block>
+</html>

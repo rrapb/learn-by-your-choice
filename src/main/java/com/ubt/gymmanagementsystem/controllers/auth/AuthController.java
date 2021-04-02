@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthController {
 
     @GetMapping("/403")
-    public String forbidden403(Model model){
+    public String forbidden403(){
         return "auth/403";
     }
 
@@ -38,8 +38,7 @@ public class AuthController {
     }
 
     @GetMapping("/index")
-    public String index(Model model){
-//        model.addAttribute("template", "");
+    public String index(){
         return "fragments/dashboard";
     }
 }
