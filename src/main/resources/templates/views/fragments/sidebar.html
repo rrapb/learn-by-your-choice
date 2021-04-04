@@ -3,12 +3,12 @@
 
     <div th:fragment="sidebar">
     <!-- this is sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/index">
             <div class="sidebar-brand-icon rotate-n-15">
-                <i class="fas fa-laugh-wink"></i>
+                <i class="fas fa-dumbbell"></i>
             </div>
             <div class="sidebar-brand-text mx-3">GymMS</div>
         </a>
@@ -27,36 +27,36 @@
         <hr class="sidebar-divider">
 
         <!-- Heading -->
-        <div class="sidebar-heading">
+        <div class="sidebar-heading" style="padding-left:7.5%">
             Administration
         </div>
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <li class="nav-item" sec:authorize="hasAuthority('READ_ROLE')">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseRoles" aria-expanded="true" aria-controls="collapseRoles">
                 <i class="fas fa-fw fa-cog"></i>
                 <span>Roles</span>
             </a>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div id="collapseRoles" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Manage roles:</h6>
-                    <a class="collapse-item" href="/addRole">Add role</a>
-                    <a class="collapse-item" href="/roles">List roles</a>
+                    <a class="collapse-item" href="/addRole" sec:authorize="hasAuthority('WRITE_ROLE')">Add role</a>
+                    <a class="collapse-item" href="/roles" sec:authorize="hasAuthority('READ_ROLE')">List roles</a>
                 </div>
             </div>
         </li>
 
         <!-- Nav Item - Utilities Collapse Menu -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-                <i class="fas fa-fw fa-wrench"></i>
+        <li class="nav-item" sec:authorize="hasAuthority('READ_USER')">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="true" aria-controls="collapseUsers">
+                <i class="fas fa-fw fa-users"></i>
                 <span>Users</span>
             </a>
-            <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+            <div id="collapseUsers" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Manage users:</h6>
-                    <a class="collapse-item" href="#" sec:authorize="hasAuthority('WRITE_USER')">Add user</a>
-                    <a class="collapse-item" href="/users">List users</a>
+                    <a class="collapse-item" href="/addUser" sec:authorize="hasAuthority('WRITE_USER')">Add user</a>
+                    <a class="collapse-item" href="/users" sec:authorize="hasAuthority('READ_USER')">List users</a>
                 </div>
             </div>
         </li>
@@ -69,28 +69,66 @@
             Gym
         </div>
 
-        <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-                <i class="fas fa-fw fa-folder"></i>
+        <!-- Nav Item - Persons Collapse Menu -->
+        <li class="nav-item" sec:authorize="hasAuthority('READ_PERSON')">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePersons" aria-expanded="true" aria-controls="collapsePersons">
+                <i class="fas fa-fw fa-user-friends"></i>
                 <span>Persons</span>
             </a>
-            <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div id="collapsePersons" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Manage persons:</h6>
-                    <a class="collapse-item" href="/addPerson">Add person</a>
-                    <a class="collapse-item" href="/persons">List persons</a>
+                    <a class="collapse-item" href="/addPerson" sec:authorize="hasAuthority('WRITE_PERSON')">Add person</a>
+                    <a class="collapse-item" href="/persons" sec:authorize="hasAuthority('READ_PERSON')">List persons</a>
                 </div>
             </div>
         </li>
 
-        <!--&lt;!&ndash; Nav Item - Charts &ndash;&gt;-->
-        <!--<li class="nav-item">-->
-            <!--<a class="nav-link" href="charts.html">-->
-                <!--<i class="fas fa-fw fa-chart-area"></i>-->
-                <!--<span>Charts</span></a>-->
-        <!--</li>-->
-        <!---->
+        <!-- Nav Item - Categories Collapse Menu -->
+        <li class="nav-item" sec:authorize="hasAuthority('READ_CATEGORY')">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCategories" aria-expanded="true" aria-controls="collapseCategories">
+                <i class="fas fa-fw fa-layer-group"></i>
+                <span>Categories</span>
+            </a>
+            <div id="collapseCategories" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Manage categories:</h6>
+                    <a class="collapse-item" href="/addCategory" sec:authorize="hasAuthority('WRITE_CATEGORY')">Add category</a>
+                    <a class="collapse-item" href="/categories" sec:authorize="hasAuthority('READ_CATEGORY')">List categories</a>
+                </div>
+            </div>
+        </li>
+
+        <!-- Nav Item - Tools Collapse Menu -->
+        <li class="nav-item" sec:authorize="hasAuthority('READ_TOOL')">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTools" aria-expanded="true" aria-controls="collapseTools">
+                <i class="fas fa-fw fa-tools"></i>
+                <span>Tools</span>
+            </a>
+            <div id="collapseTools" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Manage tools:</h6>
+                    <a class="collapse-item" href="/addTool" sec:authorize="hasAuthority('WRITE_TOOL')">Add tool</a>
+                    <a class="collapse-item" href="/tools" sec:authorize="hasAuthority('READ_TOOL')">List tools</a>
+                </div>
+            </div>
+        </li>
+
+        <!-- Nav Item - PlanPrograms Collapse Menu -->
+        <li class="nav-item" sec:authorize="hasAuthority('READ_PLAN_PROGRAM')">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePlanPrograms" aria-expanded="true" aria-controls="collapsePlanPrograms">
+                <i class="fas fa-fw fa-tasks"></i>
+                <span>Plan Programs</span>
+            </a>
+            <div id="collapsePlanPrograms" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Manage plan programs:</h6>
+                    <a class="collapse-item" href="/addPlanProgram" sec:authorize="hasAuthority('WRITE_PLAN_PROGRAM')">Add plan program</a>
+                    <a class="collapse-item" href="/planPrograms" sec:authorize="hasAuthority('READ_PLAN_PROGRAM')">List plan programs</a>
+                </div>
+            </div>
+        </li>
+
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
 

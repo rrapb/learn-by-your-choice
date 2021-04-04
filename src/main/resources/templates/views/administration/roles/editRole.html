@@ -15,37 +15,37 @@
                 <div class="col-12 alert alert-danger" th:hidden="${failed == null || !failed}" id="alert">
                     Role failed to save, name must be unique!
                 </div>
-                <h6 class="m-0 font-weight-bold text-primary">Edit role</h6>
+                <h6 class="m-0 font-weight-bold text-dark">Edit role</h6>
             </div>
             <div class="card-body">
                 <form id="editRole">
-                    <input id="id" name="id" th:value="${roleDAO.getId()}" hidden="">
+                    <input id="id" name="id" th:value="${roleDTO.getId()}" hidden="">
                     <div class="form-group">
-                        <input id="name" name="name" class="form-control form-control-user" placeholder="Enter Role name..." th:value="${roleDAO.getName()}" th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''">
+                        <input id="name" name="name" class="form-control form-control-user" placeholder="Enter Role name..." th:value="${roleDTO.getName()}" th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''">
                     </div>
                     <div class="form-group">
                         <div class="form-check-inline">
                             <div class="form-check">
 
-                                <input class="form-check-input" type="checkbox" value="true" id="viewRoles" name="viewRoles" th:checked="${roleDAO.isViewRoles()}">
+                                <input class="form-check-input" type="checkbox" value="true" id="viewRoles" name="viewRoles" th:checked="${roleDTO.isViewRoles()}">
                                 <label class="form-check-label" for="viewRoles">
                                     View Roles
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="true" id="addRoles" name="addRoles" th:checked="${roleDAO.isAddRoles()}">
+                                <input class="form-check-input" type="checkbox" value="true" id="addRoles" name="addRoles" th:checked="${roleDTO.isAddRoles()}">
                                 <label class="form-check-label" for="addRoles">
                                     Add & Edit Roles
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="true" id="viewUsers" name="viewUsers" th:checked="${roleDAO.isViewUsers()}">
+                                <input class="form-check-input" type="checkbox" value="true" id="viewUsers" name="viewUsers" th:checked="${roleDTO.isViewUsers()}">
                                 <label class="form-check-label" for="viewUsers">
                                     View Users
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="true" id="addUsers" name="addUsers" th:checked="${roleDAO.isAddUsers()}">
+                                <input class="form-check-input" type="checkbox" value="true" id="addUsers" name="addUsers" th:checked="${roleDTO.isAddUsers()}">
                                 <label class="form-check-label" for="addUsers">
                                     Add & Edit Users
                                 </label>
@@ -55,22 +55,63 @@
                     <div class="form-group">
                         <div class="form-check-inline">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="true" id="viewPersons" name="viewPersons" th:checked="${roleDAO.isViewPersons()}">
+                                <input class="form-check-input" type="checkbox" value="true" id="viewPersons" name="viewPersons" th:checked="${roleDTO.isViewPersons()}">
                                 <label class="form-check-label" for="viewPersons">
                                     View Persons
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="true" id="addPersons" name="addPersons" th:checked="${roleDAO.isAddPersons()}">
+                                <input class="form-check-input" type="checkbox" value="true" id="addPersons" name="addPersons" th:checked="${roleDTO.isAddPersons()}">
                                 <label class="form-check-label" for="addPersons">
                                     Add & Edit Persons
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="true" id="viewCategories" name="viewCategories" th:checked="${roleDTO.isViewCategories()}">
+                                <label class="form-check-label" for="viewCategories">
+                                    View Categories
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="true" id="addCategories" name="addCategories" th:checked="${roleDTO.isAddCategories()}">
+                                <label class="form-check-label" for="addCategories">
+                                    Add & Edit Categories
                                 </label>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <button id="submitButton" class="btn btn-success">Save</button>
+                        <div class="form-check-inline">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="true" id="viewTools" name="viewTools" th:checked="${roleDTO.isViewTools()}">
+                                <label class="form-check-label" for="viewTools">
+                                    View Tools
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="true" id="addTools" name="addTools" th:checked="${roleDTO.isAddTools()}">
+                                <label class="form-check-label" for="addTools">
+                                    Add & Edit Tools
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="true" id="viewPlanPrograms" name="viewPlanPrograms" th:checked="${roleDTO.isViewPlanPrograms()}">
+                                <label class="form-check-label" for="viewPlanPrograms">
+                                    View Plan Programs
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="true" id="addPlanPrograms" name="addPlanPrograms" th:checked="${roleDTO.isAddPlanPrograms()}">
+                                <label class="form-check-label" for="addPlanPrograms">
+                                    Add & Edit Plan Programs
+                                </label>
+                            </div>
+                        </div>
                     </div>
+                    <button id="submitButton" class="btn btn-dark">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="spinner" hidden=""></span>
+                        Save
+                    </button>
                 </form>
             </div>
         </div>

@@ -4,11 +4,12 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.ubt.gymmanagementsystem.repositories.administration.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 public class AuthController {
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("/403")
     public String forbidden403(){

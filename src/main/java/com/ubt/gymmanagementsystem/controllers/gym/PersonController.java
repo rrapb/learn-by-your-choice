@@ -2,7 +2,7 @@ package com.ubt.gymmanagementsystem.controllers.gym;
 
 import com.ubt.gymmanagementsystem.configurations.exceptions.DatabaseException;
 import com.ubt.gymmanagementsystem.entities.gym.PersonImage;
-import com.ubt.gymmanagementsystem.entities.gym.daos.PersonDAO;
+import com.ubt.gymmanagementsystem.entities.gym.dto.PersonDTO;
 import com.ubt.gymmanagementsystem.services.gym.PersonImageService;
 import com.ubt.gymmanagementsystem.services.gym.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,10 +39,10 @@ public class PersonController {
 
     @PostMapping(value = "/addPerson", produces = MediaType.APPLICATION_JSON_VALUE)
     @PostAuthorize("hasAuthority('WRITE_PERSON')")
-    public ModelAndView addPerson(@ModelAttribute PersonDAO personDAO, @RequestParam("image") MultipartFile image){
+    public ModelAndView addPerson(@ModelAttribute PersonDTO personDTO, @RequestParam("image") MultipartFile image){
 
         try {
-            boolean created = personService.save(personDAO, image);
+            boolean created = personService.save(personDTO, image);
 
             ModelAndView modelAndView = new ModelAndView("gym/persons/persons");
             modelAndView.addObject("isCreated", created);
@@ -51,7 +51,7 @@ public class PersonController {
         }
         catch (DatabaseException ex) {
             ModelAndView modelAndView = new ModelAndView("gym/persons/addPerson");
-            modelAndView.addObject("personDAO", personDAO);
+            modelAndView.addObject("personDTO", personDTO);
             modelAndView.addObject("failed", true);
             return modelAndView;
         }
@@ -60,18 +60,18 @@ public class PersonController {
     @GetMapping("/editPerson/{id}")
     @PostAuthorize("hasAuthority('WRITE_PERSON')")
     public String editPerson(@PathVariable Long id, Model model){
-        PersonDAO personDAO = personService.preparePersonDAO(id);
-        model.addAttribute("personDAO", personDAO);
-        model.addAttribute("gender", personDAO.getGender() == 'M');
+        PersonDTO personDTO = personService.preparePersonDTO(id);
+        model.addAttribute("personDTO", personDTO);
+        model.addAttribute("gender", personDTO.getGender() == 'M');
         return "gym/persons/editPerson";
     }
 
     @PutMapping(value = "/editPerson", produces = MediaType.APPLICATION_JSON_VALUE)
     @PostAuthorize("hasAuthority('WRITE_PERSON')")
-    public ModelAndView editPerson(@ModelAttribute PersonDAO personDAO, @RequestParam("image") MultipartFile image){
+    public ModelAndView editPerson(@ModelAttribute PersonDTO personDTO, @RequestParam("image") MultipartFile image){
 
         try {
-            boolean updated = personService.update(personDAO, image);
+            boolean updated = personService.update(personDTO, image);
 
             ModelAndView modelAndView = new ModelAndView("gym/persons/persons");
             modelAndView.addObject("isUpdated", updated);
@@ -80,7 +80,7 @@ public class PersonController {
         }
         catch (DatabaseException ex) {
             ModelAndView modelAndView = new ModelAndView("gym/persons/editPerson");
-            modelAndView.addObject("personDAO", personDAO);
+            modelAndView.addObject("personDTO", personDTO);
             modelAndView.addObject("failed", true);
             return modelAndView;
         }

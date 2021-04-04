@@ -31,7 +31,7 @@ public class User extends Auditable<String> implements UserDetails {
     @Column
     private Long id;
 
-    @Column
+    @Column(unique = true)
     private String username;
 
     @Column
@@ -61,7 +61,7 @@ public class User extends Auditable<String> implements UserDetails {
 
     @JsonBackReference
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "person_id", referencedColumnName = "id")
+    @JoinColumn(name = "person_id", referencedColumnName = "id", unique = true)
     private Person person;
 
     @Override

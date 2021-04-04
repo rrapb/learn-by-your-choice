@@ -1,6 +1,5 @@
-package com.ubt.gymmanagementsystem.entities.gym.daos;
+package com.ubt.gymmanagementsystem.entities.gym.dto;
 
-import com.ubt.gymmanagementsystem.entities.gym.PersonImage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +11,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PersonDAO {
+public class PersonDTO {
 
     private Long id;
     private String firstName;

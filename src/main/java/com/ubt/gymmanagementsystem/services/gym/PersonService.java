@@ -1,10 +1,8 @@
 package com.ubt.gymmanagementsystem.services.gym;
 
 import com.ubt.gymmanagementsystem.configurations.exceptions.DatabaseException;
-import com.ubt.gymmanagementsystem.entities.administration.Permission;
 import com.ubt.gymmanagementsystem.entities.gym.Person;
-import com.ubt.gymmanagementsystem.entities.gym.daos.PersonDAO;
-import com.ubt.gymmanagementsystem.repositories.gym.PersonImageRepository;
+import com.ubt.gymmanagementsystem.entities.gym.dto.PersonDTO;
 import com.ubt.gymmanagementsystem.repositories.gym.PersonRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,17 +27,29 @@ public class PersonService {
         return personRepository.findAll();
     }
 
+    public List<Person> getAllEnabled(){
+        return personRepository.findAllByEnabled(true);
+    }
+
+    public List<Person> getAllEnabledWithoutUsersAssigned(){
+        return personRepository.findAllWithoutUsers();
+    }
+
+    public List<Person> getAllEnabledWithoutUsersAssignedForEdit(Long id){
+        return personRepository.findAllWithoutUsersForEdit(id);
+    }
+
     public Person getById(Long id) {
         return personRepository.findById(id).orElse(null);
     }
 
-    public boolean save(PersonDAO personDAO, MultipartFile image) throws DatabaseException {
+    public boolean save(PersonDTO personDTO, MultipartFile image) throws DatabaseException {
         Person person = Person.builder()
-                .firstName(personDAO.getFirstName())
-                .lastName(personDAO.getLastName())
-                .birthDate(getBirthdateFromString(personDAO.getBirthDateString()))
-                .gender(personDAO.getGender())
-                .personalId(personDAO.getPersonalId())
+                .firstName(personDTO.getFirstName())
+                .lastName(personDTO.getLastName())
+                .birthDate(getBirthdateFromString(personDTO.getBirthDateString()))
+                .gender(personDTO.getGender())
+                .personalId(personDTO.getPersonalId())
                 .enabled(true).build();
 
         if(StringUtils.isNotBlank(person.getFirstName()) && StringUtils.isNotBlank(person.getLastName())
@@ -60,16 +70,16 @@ public class PersonService {
         }
     }
 
-    public boolean update(PersonDAO personDAO, MultipartFile image) throws DatabaseException {
+    public boolean update(PersonDTO personDTO, MultipartFile image) throws DatabaseException {
 
-        Person person = getById(personDAO.getId());
+        Person person = getById(personDTO.getId());
         Person tempPerson = Person.builder()
                 .id(person.getId())
-                .firstName(personDAO.getFirstName())
-                .lastName(personDAO.getLastName())
-                .birthDate(getBirthdateFromString(personDAO.getBirthDateString()))
-                .gender(personDAO.getGender())
-                .personalId(personDAO.getPersonalId())
+                .firstName(personDTO.getFirstName())
+                .lastName(personDTO.getLastName())
+                .birthDate(getBirthdateFromString(personDTO.getBirthDateString()))
+                .gender(personDTO.getGender())
+                .personalId(personDTO.getPersonalId())
                 .enabled(true).build();
 
         if(StringUtils.isNotBlank(tempPerson.getFirstName()) && StringUtils.isNotBlank(tempPerson.getLastName())
@@ -116,11 +126,11 @@ public class PersonService {
         }
     }
 
-    public PersonDAO preparePersonDAO(final Long id) {
+    public PersonDTO preparePersonDTO(final Long id) {
 
         Person person = getById(id);
 
-        return PersonDAO.builder()
+        return PersonDTO.builder()
                 .id(person.getId())
                 .firstName(person.getFirstName())
                 .lastName(person.getLastName())

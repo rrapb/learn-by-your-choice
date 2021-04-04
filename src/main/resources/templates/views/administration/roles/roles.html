@@ -36,7 +36,7 @@
                 <div class="col-12 alert alert-danger" th:if="${isEnabled != null && !isEnabled}" type="hidden">
                     Role failed to enable
                 </div>
-                <h6 class="m-0 font-weight-bold text-primary">Roles</h6>
+                <h6 class="m-0 font-weight-bold text-dark">Roles</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -63,7 +63,7 @@
                             <td th:text="${role.getName()}" />
                             <td th:text="${role.isEnabled} ? Enabled : Disabled"/>
                             <td>
-                                <a th:href="@{|/editRole/${role.getId()}|}" class="btn btn-info btn-circle">
+                                <a th:href="@{|/editRole/${role.getId()}|}" class="btn btn-dark btn-circle">
                                     <i class="fas fa-wrench"></i>
                                 </a>
                                 <a th:href="@{|/disableRole/${role.getId()}|}" class="btn btn-danger btn-circle" th:if="${role.isEnabled()}" type="hidden">

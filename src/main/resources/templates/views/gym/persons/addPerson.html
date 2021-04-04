@@ -13,30 +13,30 @@
 
             <div class="card-header py-3">
                 <div class="col-12 alert alert-danger" th:hidden="${failed == null || !failed}" id="alert">
-                    Person failed to save, name must be unique!
+                    Person failed to save, fields should be filled!
                 </div>
-                <h6 class="m-0 font-weight-bold text-primary">Add person</h6>
+                <h6 class="m-0 font-weight-bold text-dark">Add person</h6>
             </div>
             <div class="card-body">
                 <form id="addPerson" enctype="multipart/form-data" method="POST" action="/addPerson">
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="firstName">First Name</label>
-                            <input id="firstName" name="firstName" class="form-control form-control-user" placeholder="Enter Person's first name..." th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''">
+                            <input id="firstName" name="firstName" class="form-control form-control-user" placeholder="Enter Person's first name..." th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="lastName">Last Name</label>
-                            <input id="lastName" name="lastName" class="form-control form-control-user" placeholder="Enter Person's last name..." th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''">
+                            <input id="lastName" name="lastName" class="form-control form-control-user" placeholder="Enter Person's last name..." th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''" required>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="personalId">Personal ID</label>
-                            <input id="personalId" name="personalId" class="form-control form-control-user" placeholder="Enter Person's personal ID..." th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''">
+                            <input id="personalId" name="personalId" class="form-control form-control-user" placeholder="Enter Person's personal ID..." th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="birthdate">Birthdate</label>
-                            <input type="date" id="birthDate" name="birthDateString" class="form-control form-control-user" placeholder="Enter Person's birthdate..." th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''">
+                            <input type="date" id="birthDate" name="birthDateString" class="form-control form-control-user" th:max="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" placeholder="Enter Person's birthdate..." data-date-format='yy-mm-dd' th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''" required>
                         </div>
                     </div>
                     <div class="form-row">
@@ -44,7 +44,7 @@
                             <label for="genderDiv">Gender</label>
                             <div id="genderDiv">
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="gender" id="male" value="M">
+                                    <input class="form-check-input" type="radio" name="gender" id="male" value="M" checked>
                                     <label class="form-check-label" for="male">Male</label>
                                 </div>
                                 <div class="form-check form-check-inline">
@@ -67,7 +67,10 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <button id="submitButton" class="btn btn-success">Save</button>
+                        <button id="submitButton" class="btn btn-dark">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="spinner" hidden=""></span>
+                            Save
+                        </button>
                     </div>
                 </form>
             </div>

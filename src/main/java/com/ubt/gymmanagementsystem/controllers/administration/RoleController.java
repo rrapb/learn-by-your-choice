@@ -1,8 +1,8 @@
 package com.ubt.gymmanagementsystem.controllers.administration;
 
 import com.ubt.gymmanagementsystem.configurations.exceptions.DatabaseException;
+import com.ubt.gymmanagementsystem.entities.administration.dto.RoleDTO;
 import com.ubt.gymmanagementsystem.services.administration.RoleService;
-import com.ubt.gymmanagementsystem.entities.administration.daos.RoleDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -26,16 +26,16 @@ public class RoleController {
 
     @GetMapping("/addRole")
     @PostAuthorize("hasAuthority('WRITE_ROLE')")
-    public String addRole(Model model){
+    public String addRole(){
         return "administration/roles/addRole";
     }
 
     @PostMapping(value = "/addRole", produces = MediaType.APPLICATION_JSON_VALUE)
     @PostAuthorize("hasAuthority('WRITE_ROLE')")
-    public ModelAndView addRole(@ModelAttribute RoleDAO roleDAO){
+    public ModelAndView addRole(@ModelAttribute RoleDTO roleDTO){
 
         try {
-            boolean created = roleService.save(roleDAO);
+            boolean created = roleService.save(roleDTO);
 
             ModelAndView modelAndView = new ModelAndView("administration/roles/roles");
             modelAndView.addObject("isCreated", created);
@@ -44,7 +44,7 @@ public class RoleController {
         }
         catch (DatabaseException ex) {
             ModelAndView modelAndView = new ModelAndView("administration/roles/addRole");
-            modelAndView.addObject("roleDAO", roleDAO);
+            modelAndView.addObject("roleDTO", roleDTO);
             modelAndView.addObject("failed", true);
             return modelAndView;
         }
@@ -54,16 +54,16 @@ public class RoleController {
     @PostAuthorize("hasAuthority('WRITE_ROLE')")
     public String editRole(@PathVariable Long id, Model model){
 
-        model.addAttribute("roleDAO", roleService.prepareRoleDAO(id));
+        model.addAttribute("roleDTO", roleService.prepareRoleDTO(id));
         return "administration/roles/editRole";
     }
 
     @PutMapping(value = "/editRole", produces = MediaType.APPLICATION_JSON_VALUE)
     @PostAuthorize("hasAuthority('WRITE_ROLE')")
-    public ModelAndView editRole(@ModelAttribute RoleDAO roleDAO){
+    public ModelAndView editRole(@ModelAttribute RoleDTO roleDTO){
 
         try {
-            boolean updated = roleService.update(roleDAO);
+            boolean updated = roleService.update(roleDTO);
 
             ModelAndView modelAndView = new ModelAndView("administration/roles/roles");
             modelAndView.addObject("isUpdated", updated);
@@ -72,7 +72,7 @@ public class RoleController {
         }
         catch (DatabaseException ex) {
             ModelAndView modelAndView = new ModelAndView("administration/roles/editRole");
-            modelAndView.addObject("roleDAO", roleDAO);
+            modelAndView.addObject("roleDTO", roleDTO);
             modelAndView.addObject("failed", true);
             return modelAndView;
         }

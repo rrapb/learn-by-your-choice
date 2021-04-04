@@ -35,7 +35,7 @@
                 <div class="col-12 alert alert-danger" th:if="${isEnabled != null && !isEnabled}" type="hidden">
                     Person failed to enable
                 </div>
-                <h6 class="m-0 font-weight-bold text-primary">Persons</h6>
+                <h6 class="m-0 font-weight-bold text-dark">Persons</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -70,11 +70,11 @@
                             <td th:text="${person.getFirstName()}" />
                             <td th:text="${person.getLastName()}" />
                             <td th:text="${person.getGender()}" />
-                            <td th:text="${#dates.format(person.getBirthDate(), 'yyyy-MM-dd')}" />
+                            <td th:text="${#dates.format(person.getBirthDate(), 'dd-MMM-yyyy')}" />
                             <td th:text="${person.getPersonalId()}" />
                             <td th:text="${person.isEnabled} ? Enabled : Disabled"/>
                             <td>
-                                <a th:href="@{|/editPerson/${person.getId()}|}" class="btn btn-info btn-circle">
+                                <a th:href="@{|/editPerson/${person.getId()}|}" class="btn btn-dark btn-circle">
                                     <i class="fas fa-wrench"></i>
                                 </a>
                                 <a th:href="@{|/disablePerson/${person.getId()}|}" class="btn btn-danger btn-circle" th:if="${person.isEnabled()}" type="hidden">

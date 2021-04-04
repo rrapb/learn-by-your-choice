@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{index.html}">
+<section layout:fragment="content">
+    <!-- Page Heading -->
+
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Add User Form</h1>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row justify-content-center">
+        <div class="col-lg-6 card shadow mb-4">
+
+            <div class="card-header py-3">
+                <div class="col-12 alert alert-danger" th:hidden="${failed == null || !failed}" id="alert">
+                    User failed to save, fields should be filled!
+                </div>
+                <h6 class="m-0 font-weight-bold text-dark">Add User</h6>
+            </div>
+            <div class="card-body">
+                <form id="addUser">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="personId">Person</label>
+                            <select id="personId" name="personId" class="form-control form-control-user" placeholder="Select Person..." th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''" required>
+                                <option th:each="person : ${persons}"
+                                        th:value="${person.getId()}"
+                                        th:utext="${person.getFirstName() + ' ' + person.getLastName()}"/>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="roleId">Role</label>
+                            <select id="roleId" name="roleId" class="form-control form-control-user" placeholder="Select Role..." th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''" required>
+                                <option th:each="role : ${roles}"
+                                        th:value="${role.getId()}"
+                                        th:utext="${role.getName()}"/>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="username">Username</label>
+                            <input id="username" name="username" class="form-control form-control-user" placeholder="Enter Username..." th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="email">Email</label>
+                            <input id="email" name="email" class="form-control form-control-user" placeholder="Enter Email..." th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button id="submitButton" class="btn btn-dark">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="spinner" hidden=""></span>
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/gym/user/addUser.js}"></script>
+</th:block>
+</html>

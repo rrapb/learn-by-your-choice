@@ -1,7 +1,11 @@
 $(document).ready(function() {
     $("#submitButton").click(function(event) {
+        $("#spinner").removeAttr("hidden");
+        $("#submitButton").attr("disabled");
         event.preventDefault();
         if(!validate()) {
+            $("#spinner").attr("hidden", "");
+            $("#submitButton").removeAttr("disabled");
             return;
         }
         $.ajax({

@@ -51,10 +51,17 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
         Permission writeUser = createPrivilegeIfNotFound("WRITE_USER");
         Permission readPerson = createPrivilegeIfNotFound("READ_PERSON");
         Permission writePerson = createPrivilegeIfNotFound("WRITE_PERSON");
+        Permission readCategory = createPrivilegeIfNotFound("READ_CATEGORY");
+        Permission writeCategory = createPrivilegeIfNotFound("WRITE_CATEGORY");
+        Permission readTool = createPrivilegeIfNotFound("READ_TOOL");
+        Permission writeTool = createPrivilegeIfNotFound("WRITE_TOOL");
+        Permission readPlanProgram = createPrivilegeIfNotFound("READ_PLAN_PROGRAM");
+        Permission writePlanProgram = createPrivilegeIfNotFound("WRITE_PLAN_PROGRAM");
 
-        List<Permission> adminPrivileges = Arrays.asList(readRole, writeRole, readUser, writeUser, readPerson, writePerson);
+        List<Permission> adminPrivileges = Arrays.asList(readRole, writeRole, readUser, writeUser, readPerson, writePerson,
+                readCategory, writeCategory, readTool, writeTool, readPlanProgram, writePlanProgram);
         Role adminRole = createRoleIfNotFound("ROLE_ADMIN", adminPrivileges);
-        Role userRole = createRoleIfNotFound("ROLE_USER", Arrays.asList(readRole,readUser));
+        Role userRole = createRoleIfNotFound("ROLE_USER", Arrays.asList(readRole,readUser, readPerson, writePerson));
 
         Person person1 = Person.builder()
                 .firstName("Test")

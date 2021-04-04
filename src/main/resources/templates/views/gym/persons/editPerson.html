@@ -13,31 +13,31 @@
 
             <div class="card-header py-3">
                 <div class="col-12 alert alert-danger" th:hidden="${failed == null || !failed}" id="alert">
-                    Person failed to save, name must be unique!
+                    Person failed to save, fields should be completed!
                 </div>
-                <h6 class="m-0 font-weight-bold text-primary">Edit person</h6>
+                <h6 class="m-0 font-weight-bold text-dark">Edit person</h6>
             </div>
             <div class="card-body">
                 <form id="editPerson" enctype="multipart/form-data" method="POST" action="/editPerson">
-                    <input id="id" name="id" th:value="${personDAO.getId()}" hidden="">
+                    <input id="id" name="id" th:value="${personDTO.getId()}" hidden="">
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="firstName">First Name</label>
-                            <input id="firstName" name="firstName" class="form-control form-control-user" placeholder="Enter Person's first name..." th:value="${personDAO.getFirstName()}" th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''">
+                            <input id="firstName" name="firstName" class="form-control form-control-user" placeholder="Enter Person's first name..." th:value="${personDTO.getFirstName()}" th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="lastName">Last Name</label>
-                            <input id="lastName" name="lastName" class="form-control form-control-user" placeholder="Enter Person's last name..." th:value="${personDAO.getLastName()}" th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''">
+                            <input id="lastName" name="lastName" class="form-control form-control-user" placeholder="Enter Person's last name..." th:value="${personDTO.getLastName()}" th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="personalId">Personal ID</label>
-                            <input id="personalId" name="personalId" class="form-control form-control-user" placeholder="Enter Person's personal ID..." th:value="${personDAO.getPersonalId()}" th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''">
+                            <input id="personalId" name="personalId" class="form-control form-control-user" placeholder="Enter Person's personal ID..." th:value="${personDTO.getPersonalId()}" th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''">
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="birthdate">Birthdate</label>
-                            <input type="date" id="birthdate" name="birthDateString" class="form-control form-control-user" placeholder="Enter Person's birthdate..." th:value="${#dates.format(personDAO.getBirthDate(), 'yyyy-MM-dd')}" th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''">
+                            <label for="birthDate">Birthdate</label>
+                            <input type="date" id="birthDate" name="birthDateString" class="form-control form-control-user" th:max="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" placeholder="Enter Person's birthdate..." th:value="${#dates.format(personDTO.getBirthDate(), 'yyyy-MM-dd')}" th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''">
                         </div>
                     </div>
                     <div class="form-row">
@@ -68,7 +68,10 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <button id="submitButton" class="btn btn-success">Save</button>
+                        <button id="submitButton" class="btn btn-dark">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="spinner" hidden=""></span>
+                            Save
+                        </button>
                     </div>
                 </form>
             </div>

@@ -1,13 +1,12 @@
 package com.ubt.gymmanagementsystem.services.administration;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.ubt.gymmanagementsystem.configurations.exceptions.DatabaseException;
 import com.ubt.gymmanagementsystem.entities.administration.Permission;
 import com.ubt.gymmanagementsystem.entities.administration.Role;
-import com.ubt.gymmanagementsystem.entities.administration.daos.RoleDAO;
+import com.ubt.gymmanagementsystem.entities.administration.dto.RoleDTO;
 import com.ubt.gymmanagementsystem.repositories.administration.PermissionRepository;
 import com.ubt.gymmanagementsystem.repositories.administration.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +25,17 @@ public class RoleService {
         return roleRepository.findAll();
     }
 
+    public List<Role> getAllEnabled(){
+        return roleRepository.findAllByEnabled(true);
+    }
+
     public Role getById(Long id) {
         return roleRepository.findById(id).orElse(null);
     }
 
-    public boolean save(RoleDAO roleDAO) throws DatabaseException {
+    public boolean save(RoleDTO roleDTO) throws DatabaseException {
 
-        Role role = Role.builder().name(roleDAO.getName()).permissions(preparePermissions(roleDAO)).enabled(true).build();
+        Role role = Role.builder().name(roleDTO.getName()).permissions(preparePermissions(roleDTO)).enabled(true).build();
         if(role.getName() != null && !role.getName().trim().isEmpty()){
             try {
                 roleRepository.save(role);
@@ -46,11 +49,11 @@ public class RoleService {
         }
     }
 
-    public boolean update(RoleDAO roleDAO) throws DatabaseException {
+    public boolean update(RoleDTO roleDTO) throws DatabaseException {
 
-        Role role = getById(roleDAO.getId());
-        Role tempRole = Role.builder().id(roleDAO.getId()).name(roleDAO.getName())
-                .permissions(preparePermissions(roleDAO)).enabled(role.isEnabled()).build();
+        Role role = getById(roleDTO.getId());
+        Role tempRole = Role.builder().id(roleDTO.getId()).name(roleDTO.getName())
+                .permissions(preparePermissions(roleDTO)).enabled(role.isEnabled()).build();
 
         if(tempRole.getName() != null && !tempRole.getName().trim().isEmpty() && roleRepository.existsById(tempRole.getId())){
             try {
@@ -91,47 +94,71 @@ public class RoleService {
         }
     }
 
-    public RoleDAO prepareRoleDAO(final Long id) {
+    public RoleDTO prepareRoleDTO(final Long id) {
 
         Role role = getById(id);
 
-        RoleDAO roleDAO = new RoleDAO();
-        roleDAO.setId(role.getId());
-        roleDAO.setName(role.getName());
+        RoleDTO roleDTO = new RoleDTO();
+        roleDTO.setId(role.getId());
+        roleDTO.setName(role.getName());
         for(Permission permission: role.getPermissions()){
             if (permission.getName().equals("READ_ROLE"))
-                roleDAO.setViewRoles(true);
+                roleDTO.setViewRoles(true);
             else if (permission.getName().equals("WRITE_ROLE"))
-                roleDAO.setAddRoles(true);
+                roleDTO.setAddRoles(true);
             else if (permission.getName().equals("READ_USER"))
-                roleDAO.setViewUsers(true);
+                roleDTO.setViewUsers(true);
             else if (permission.getName().equals("WRITE_USER"))
-                roleDAO.setAddUsers(true);
+                roleDTO.setAddUsers(true);
             else if (permission.getName().equals("READ_PERSON"))
-                roleDAO.setViewPersons(true);
+                roleDTO.setViewPersons(true);
             else if (permission.getName().equals("WRITE_PERSON"))
-                roleDAO.setAddPersons(true);
+                roleDTO.setAddPersons(true);
+            else if (permission.getName().equals("READ_CATEGORY"))
+                roleDTO.setViewCategories(true);
+            else if (permission.getName().equals("WRITE_CATEGORY"))
+                roleDTO.setAddCategories(true);
+            else if (permission.getName().equals("READ_TOOL"))
+                roleDTO.setViewTools(true);
+            else if (permission.getName().equals("WRITE_TOOL"))
+                roleDTO.setAddTools(true);
+            else if (permission.getName().equals("READ_PLAN_PROGRAM"))
+                roleDTO.setViewPlanPrograms(true);
+            else if (permission.getName().equals("WRITE_PLAN_PROGRAM"))
+                roleDTO.setAddPlanPrograms(true);
         }
 
-        return roleDAO;
+        return roleDTO;
     }
 
-    private ArrayList<Permission> preparePermissions(final RoleDAO roleDAO) {
+    private ArrayList<Permission> preparePermissions(final RoleDTO roleDTO) {
 
         ArrayList<Permission> permissions = new ArrayList<>();
 
-        if(roleDAO.isViewRoles())
+        if(roleDTO.isViewRoles())
             permissions.add(permissionRepository.findByName("READ_ROLE"));
-        if (roleDAO.isAddRoles())
+        if (roleDTO.isAddRoles())
             permissions.add(permissionRepository.findByName("WRITE_ROLE"));
-        if (roleDAO.isViewUsers())
+        if (roleDTO.isViewUsers())
             permissions.add(permissionRepository.findByName("READ_USER"));
-        if (roleDAO.isAddUsers())
+        if (roleDTO.isAddUsers())
             permissions.add(permissionRepository.findByName("WRITE_USER"));
-        if (roleDAO.isViewPersons())
+        if (roleDTO.isViewPersons())
             permissions.add(permissionRepository.findByName("READ_PERSON"));
-        if (roleDAO.isAddPersons())
+        if (roleDTO.isAddPersons())
             permissions.add(permissionRepository.findByName("WRITE_PERSON"));
+        if (roleDTO.isViewCategories())
+            permissions.add(permissionRepository.findByName("READ_CATEGORY"));
+        if (roleDTO.isAddCategories())
+            permissions.add(permissionRepository.findByName("WRITE_CATEGORY"));
+        if (roleDTO.isViewTools())
+            permissions.add(permissionRepository.findByName("READ_TOOL"));
+        if (roleDTO.isAddTools())
+            permissions.add(permissionRepository.findByName("WRITE_TOOL"));
+        if (roleDTO.isViewPlanPrograms())
+            permissions.add(permissionRepository.findByName("READ_PLAN_PROGRAM"));
+        if (roleDTO.isAddPlanPrograms())
+            permissions.add(permissionRepository.findByName("WRITE_PLAN_PROGRAM"));
 
         return permissions;
     }

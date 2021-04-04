@@ -1,4 +1,4 @@
-package com.ubt.gymmanagementsystem.entities.administration.daos;
+package com.ubt.gymmanagementsystem.entities.administration.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoleDAO {
+public class RoleDTO {
 
     private Long id;
     private String name;
@@ -17,4 +17,10 @@ public class RoleDAO {
     private boolean addUsers;
     private boolean viewPersons;
     private boolean addPersons;
+    private boolean viewCategories;
+    private boolean addCategories;
+    private boolean viewTools;
+    private boolean addTools;
+    private boolean viewPlanPrograms;
+    private boolean addPlanPrograms;
 }

@@ -12,7 +12,31 @@
             <!-- DataTales Example -->
             <div class="card shadow mb-4 col-12">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Users</h6>
+                    <div class="col-12 alert alert-success" th:if="${isCreated != null && isCreated}" type="hidden">
+                        User created successfully
+                    </div>
+                    <div class="col-12 alert alert-danger" th:if="${isCreated != null && !isCreated}" type="hidden">
+                        User failed to create
+                    </div>
+                    <div class="col-12 alert alert-success" th:if="${isUpdated != null && isUpdated}" type="hidden">
+                        User updated successfully
+                    </div>
+                    <div class="col-12 alert alert-danger" th:if="${isUpdated != null && !isUpdated}" type="hidden">
+                        User failed to update
+                    </div>
+                    <div class="col-12 alert alert-success" th:if="${isDisabled != null && isDisabled}" type="hidden">
+                        User disabled successfully
+                    </div>
+                    <div class="col-12 alert alert-danger" th:if="${isDisabled != null && !isDisabled}" type="hidden">
+                        User failed to disable
+                    </div>
+                    <div class="col-12 alert alert-success" th:if="${isEnabled != null && isEnabled}" type="hidden">
+                        User enabled successfully
+                    </div>
+                    <div class="col-12 alert alert-danger" th:if="${isEnabled != null && !isEnabled}" type="hidden">
+                        User failed to enable
+                    </div>
+                    <h6 class="m-0 font-weight-bold text-dark">Users</h6>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -22,8 +46,10 @@
                                 <th>ID</th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
+                                <th>Username</th>
                                 <th>Email</th>
                                 <th>Role</th>
+                                <th>Actions</th>
                             </tr>
                             </thead>
                             <tfoot>
@@ -31,8 +57,10 @@
                                 <th>ID</th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
+                                <th>Username</th>
                                 <th>Email</th>
                                 <th>Role</th>
+                                <th>Actions</th>
                             </tr>
                             </tfoot>
                             <tbody>
@@ -40,8 +68,20 @@
                                     <td th:text="${user.getId()}" />
                                     <td th:text="${user.getPerson().getFirstName()}" />
                                     <td th:text="${user.getPerson().getLastName()}" />
+                                    <td th:text="${user.getUsername()}" />
                                     <td th:text="${user.getEmail()}" />
                                     <td th:text="${user.getRole().getName()}" />
+                                    <td>
+                                        <a th:href="@{|/editUser/${user.getId()}|}" class="btn btn-dark btn-circle">
+                                            <i class="fas fa-wrench"></i>
+                                        </a>
+                                        <a th:href="@{|/disableUser/${user.getId()}|}" class="btn btn-danger btn-circle" th:if="${user.isEnabled()}" type="hidden">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                        <a th:href="@{|/enableUser/${user.getId()}|}" class="btn btn-success btn-circle" th:if="${!user.isEnabled()}" type="hidden">
+                                            <i class="fas fa-check"></i>
+                                        </a>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
