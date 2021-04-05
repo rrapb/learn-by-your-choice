@@ -126,13 +126,12 @@ public class UserService implements UserDetailsService {
 
         User user = getById(id);
 
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(user.getId());
-        userDTO.setUsername(user.getUsername());
-        userDTO.setEmail(user.getEmail());
-        userDTO.setPersonId(user.getPerson().getId());
-        userDTO.setRoleId(user.getRole().getId());
-
-        return userDTO;
+        return UserDTO.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .personId(user.getPerson().getId())
+                .roleId(user.getRole().getId())
+                .build();
     }
 }

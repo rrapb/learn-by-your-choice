@@ -1,4 +1,4 @@
-package com.ubt.gymmanagementsystem.entities.administration.dto;
+package com.ubt.gymmanagementsystem.entities.gym.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,11 +9,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+public class PlanProgramDTO {
 
     private Long id;
-    private String username;
-    private String email;
+    private String day;
     private Long personId;
-    private Long roleId;
+    private Long categoryId;
 }

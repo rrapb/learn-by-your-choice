@@ -34,7 +34,7 @@ public class User extends Auditable<String> implements UserDetails {
     @Column(unique = true)
     private String username;
 
-    @Column
+    @Column(unique = true)
     private String email;
 
     @Column

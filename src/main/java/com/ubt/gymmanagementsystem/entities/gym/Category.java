@@ -17,41 +17,28 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(name="persons")
-public class Person extends Auditable<String> {
+@Table(name="categories")
+public class Category extends Auditable<String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
 
-    @Column
-    private String firstName;
+    @Column(unique = true)
+    private String name;
 
     @Column
-    private String lastName;
-
-    @Column
-    private char gender;
-
-    @Column
-    private Date birthDate;
-
-    @Column(unique = true, name = "personal_id")
-    private String personalId;
+    private String description;
 
     @Column
     private boolean enabled;
 
     @JsonManagedReference
-    @OneToOne(mappedBy = "person")
-    private User user;
+    @OneToMany(mappedBy = "category")
+    private List<Tool> tools;
 
     @JsonManagedReference
-    @OneToOne(mappedBy = "person")
-    private PersonImage image;
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "person")
+    @OneToMany(mappedBy = "category")
     private List<PlanProgram> planPrograms;
 }
