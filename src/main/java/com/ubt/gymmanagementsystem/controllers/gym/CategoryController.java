@@ -55,7 +55,7 @@ public class CategoryController {
     public String editCategory(@PathVariable Long id, Model model){
         CategoryDTO categoryDTO = categoryService.prepareCategoryDTO(id);
         model.addAttribute("categoryDTO", categoryDTO);
-        return "gym/categories/categories";
+        return "gym/categories/editCategory";
     }
 
     @PutMapping(value = "/editCategory", produces = MediaType.APPLICATION_JSON_VALUE)

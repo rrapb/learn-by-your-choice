@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{index.html}">
+<section layout:fragment="content">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Plan Programs</h1>
+        <button class="d-none d-sm-inline-block btn btn-sm btn-dark shadow-sm" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-download fa-sm text-white-50"></i> Generate Plan Program</button>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Generate Plan Program</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <form id="downloadPlanProgramForm" method="GET" action="/downloadPlanProgram">
+                        <label for="personId">Person</label>
+                        <select id="personId" name="personId" class="form-control form-control-user" placeholder="Select Person..." th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''" required>
+                            <option th:each="person : ${persons}"
+                                    th:value="${person.getId()}"
+                                    th:utext="${person.getFirstName() + ' ' + person.getLastName()}"/>
+                        </select>
+                    </form>
+                </div>
+                <div class="modal-footer"><button class="btn btn-secondary" type="button" data-dismiss="modal" id="closeModal">Close</button><button class="btn btn-primary" id="downloadPlanProgramButton" type="button">Save changes</button></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4 col-12">
+            <div class="card-header py-3">
+                <div class="col-12 alert alert-success" th:if="${isCreated != null && isCreated}" type="hidden">
+                    Plan Program created successfully
+                </div>
+                <div class="col-12 alert alert-danger" th:if="${isCreated != null && !isCreated}" type="hidden">
+                    Plan Program failed to create
+                </div>
+                <div class="col-12 alert alert-success" th:if="${isUpdated != null && isUpdated}" type="hidden">
+                    Plan Program updated successfully
+                </div>
+                <div class="col-12 alert alert-danger" th:if="${isUpdated != null && !isUpdated}" type="hidden">
+                    Plan Program failed to update
+                </div>
+                <div class="col-12 alert alert-success" th:if="${isDisabled != null && isDisabled}" type="hidden">
+                    Plan Program disabled successfully
+                </div>
+                <div class="col-12 alert alert-danger" th:if="${isDisabled != null && !isDisabled}" type="hidden">
+                    Plan Program failed to disable
+                </div>
+                <div class="col-12 alert alert-success" th:if="${isEnabled != null && isEnabled}" type="hidden">
+                    Plan Program enabled successfully
+                </div>
+                <div class="col-12 alert alert-danger" th:if="${isEnabled != null && !isEnabled}" type="hidden">
+                    Plan Program failed to enable
+                </div>
+                <h6 class="m-0 font-weight-bold text-dark">Plan Programs</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Day</th>
+                            <th>Person</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>Day</th>
+                            <th>Person</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        <tr th:each="planProgram : ${planPrograms}">
+                            <td th:text="${planProgram.getId()}" />
+                            <td th:text="${planProgram.getDay()}" />
+                            <td th:text="${planProgram.getPerson().getFirstName() + ' ' + planProgram.getPerson().getLastName()}" />
+                            <td th:text="${planProgram.getCategory().getName()}" />
+                            <td th:text="${planProgram.isEnabled} ? Enabled : Disabled"/>
+                            <td>
+                                <a th:href="@{|/editPlanProgram/${planProgram.getId()}|}" class="btn btn-dark btn-circle">
+                                    <i class="fas fa-wrench"></i>
+                                </a>
+                                <a th:href="@{|/disablePlanProgram/${planProgram.getId()}|}" class="btn btn-danger btn-circle" th:if="${planProgram.isEnabled()}" type="hidden">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                                <a th:href="@{|/enablePlanProgram/${planProgram.getId()}|}" class="btn btn-success btn-circle" th:if="${!planProgram.isEnabled()}" type="hidden">
+                                    <i class="fas fa-check"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/gym/planProgram/planProgram.js}"></script>
+</th:block>
+</html>

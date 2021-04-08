@@ -6,10 +6,17 @@ import com.ubt.gymmanagementsystem.entities.gym.Person;
 import com.ubt.gymmanagementsystem.entities.gym.PlanProgram;
 import com.ubt.gymmanagementsystem.entities.gym.dto.PlanProgramDTO;
 import com.ubt.gymmanagementsystem.repositories.gym.PlanProgramRepository;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -99,13 +106,42 @@ public class PlanProgramService {
 
         PlanProgram planProgram = getById(id);
         if(!planProgram.isEnabled()){
-            planProgram.setEnabled(false);
+            planProgram.setEnabled(true);
             planProgramRepository.save(planProgram);
             return true;
         }
         else {
             return false;
         }
+    }
+
+    public byte[] download(Long id) {
+
+        Person person = personService.getById(id);
+        List<PlanProgram> planPrograms = planProgramRepository.findAllByPersonAndEnabled(person, true);
+        if(!planPrograms.isEmpty()){
+            try {
+                File file = ResourceUtils.getFile("classpath:planProgramReport/jasper_report.jrxml");
+                JasperReport report = JasperCompileManager.compileReport(file.getAbsolutePath());
+                HashMap<String, Object> parameters = new HashMap<String, Object>();
+
+                parameters.put("person", person.getFirstName() + " " + person.getLastName());
+
+                ArrayList<HashMap<String, String>> list = new ArrayList();
+                for (PlanProgram planProgram : planPrograms) {
+                    HashMap<String, String> map = new HashMap<>();
+                    map.put("day", planProgram.getDay());
+                    map.put("category", planProgram.getCategory().getName());
+                    list.add(map);
+                }
+                JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(list);
+                JasperPrint print = JasperFillManager.fillReport(report, parameters, beanColDataSource);
+                return JasperExportManager.exportReportToPdf(print);
+            } catch (FileNotFoundException | JRException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
     public PlanProgramDTO preparePlanProgramDTO(final Long id) {

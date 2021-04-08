@@ -10,8 +10,8 @@ $(document).ready(function() {
         }
         $.ajax({
             type: "PUT",
-            url: "/editRole",
-            data: $("#editRole").serialize(),
+            url: "/editCategory",
+            data: $("#editCategory").serialize(),
             success: function (result) {
                 $("#page-top").html(result);
             },
@@ -24,8 +24,8 @@ $(document).ready(function() {
 
     function validate() {
         var name = $("#name").val();
+        var description = $("#description").val();
         var valid = true;
-
         if(name === "" || name.length < 3) {
             $("#alert").removeAttr("hidden");
             $("#name").addClass("border-bottom-danger");
@@ -34,6 +34,16 @@ $(document).ready(function() {
         else {
             $("#name").removeClass("border-bottom-danger");
             $("#name").addClass("border-bottom-success");
+        }
+
+        if(description === "" || description.length < 3) {
+            $("#alert").removeAttr("hidden");
+            $("#description").addClass("border-bottom-danger");
+            valid = false;
+        }
+        else {
+            $("#description").removeClass("border-bottom-danger");
+            $("#description").addClass("border-bottom-success");
         }
         return valid;
     }

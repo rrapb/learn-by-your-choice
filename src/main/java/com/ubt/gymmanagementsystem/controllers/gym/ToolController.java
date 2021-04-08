@@ -2,6 +2,7 @@ package com.ubt.gymmanagementsystem.controllers.gym;
 
 import com.ubt.gymmanagementsystem.configurations.exceptions.DatabaseException;
 import com.ubt.gymmanagementsystem.entities.gym.dto.ToolDTO;
+import com.ubt.gymmanagementsystem.services.gym.CategoryService;
 import com.ubt.gymmanagementsystem.services.gym.ToolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,6 +18,9 @@ public class ToolController {
     @Autowired
     private ToolService toolService;
 
+    @Autowired
+    private CategoryService categoryService;
+
     @GetMapping("/tools")
     @PostAuthorize("hasAuthority('READ_TOOL')")
     public String tools(Model model){
@@ -26,7 +30,9 @@ public class ToolController {
 
     @GetMapping("/addTool")
     @PostAuthorize("hasAuthority('WRITE_TOOL')")
-    public String addTool(){
+    public String addTool(Model model){
+
+        model.addAttribute("categories", categoryService.getAllEnabled());
         return "gym/tools/addTool";
     }
 
@@ -45,6 +51,7 @@ public class ToolController {
         catch (DatabaseException ex) {
             ModelAndView modelAndView = new ModelAndView("gym/tools/addTool");
             modelAndView.addObject("toolDTO", toolDTO);
+            modelAndView.addObject("categories", categoryService.getAllEnabled());
             modelAndView.addObject("failed", true);
             return modelAndView;
         }
@@ -55,7 +62,8 @@ public class ToolController {
     public String editTool(@PathVariable Long id, Model model){
         ToolDTO toolDTO = toolService.prepareToolDTO(id);
         model.addAttribute("toolDTO", toolDTO);
-        return "gym/tools/tools";
+        model.addAttribute("categories", categoryService.getAllEnabled());
+        return "gym/tools/editTool";
     }
 
     @PutMapping(value = "/editTool", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -73,6 +81,7 @@ public class ToolController {
         catch (DatabaseException ex) {
             ModelAndView modelAndView = new ModelAndView("gym/tools/editTool");
             modelAndView.addObject("toolDTO", toolDTO);
+            modelAndView.addObject("categories", categoryService.getAllEnabled());
             modelAndView.addObject("failed", true);
             return modelAndView;
         }

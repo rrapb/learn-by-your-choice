@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(name="plan_programs")
+@Table(name="plan_programs", uniqueConstraints = {@UniqueConstraint(columnNames = {"day", "person_id", "category_id"})})
 public class PlanProgram extends Auditable<String> {
 
     @Id

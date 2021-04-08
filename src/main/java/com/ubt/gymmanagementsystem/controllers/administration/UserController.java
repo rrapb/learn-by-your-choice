@@ -54,6 +54,8 @@ public class UserController {
         catch (DatabaseException ex) {
             ModelAndView modelAndView = new ModelAndView("administration/users/addUser");
             modelAndView.addObject("userDTO", userDTO);
+            modelAndView.addObject("roles", roleService.getAllEnabled());
+            modelAndView.addObject("persons", personService.getAllEnabledWithoutUsersAssigned());
             modelAndView.addObject("failed", true);
             return modelAndView;
         }
@@ -84,6 +86,8 @@ public class UserController {
         catch (DatabaseException ex) {
             ModelAndView modelAndView = new ModelAndView("administration/users/editUser");
             modelAndView.addObject("userDTO", userDTO);
+            modelAndView.addObject("roles", roleService.getAllEnabled());
+            modelAndView.addObject("persons", personService.getAllEnabledWithoutUsersAssigned());
             modelAndView.addObject("failed", true);
             return modelAndView;
         }

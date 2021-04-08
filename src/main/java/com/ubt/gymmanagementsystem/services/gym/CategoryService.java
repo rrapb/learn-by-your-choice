@@ -87,7 +87,7 @@ public class CategoryService {
 
         Category category = getById(id);
         if(!category.isEnabled()){
-            category.setEnabled(false);
+            category.setEnabled(true);
             categoryRepository.save(category);
             return true;
         }

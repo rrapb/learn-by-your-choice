@@ -23,9 +23,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Autowired
-    private CustomAccessDeniedHandler accessDeniedHandler;
-
-    @Autowired
     private UserService userService;
 
     @Override
@@ -38,8 +35,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-//                .antMatchers("/admin/**").hasRole("ADMIN")
-//                .antMatchers("/anonymous*").anonymous()
                 .antMatchers("/login*").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -55,7 +50,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .exceptionHandling().accessDeniedPage("/403");
-//    accessDeniedHandler(accessDeniedHandler);
     }
 
     @Override

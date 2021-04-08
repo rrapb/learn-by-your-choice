@@ -98,7 +98,7 @@ public class ToolService {
 
         Tool tool = getById(id);
         if(!tool.isEnabled()){
-            tool.setEnabled(false);
+            tool.setEnabled(true);
             toolRepository.save(tool);
             return true;
         }

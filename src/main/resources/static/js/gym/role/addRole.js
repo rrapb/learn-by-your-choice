@@ -24,11 +24,17 @@ $(document).ready(function() {
 
     function validate() {
         var name = $("#name").val();
-        if(name == "" || name.length < 3) {
+        var valid = true;
+
+        if(name === "" || name.length < 3) {
             $("#alert").removeAttr("hidden");
             $("#name").addClass("border-bottom-danger");
-            return false;
+            valid = false;
         }
-        return true;
+        else {
+            $("#name").removeClass("border-bottom-danger");
+            $("#name").addClass("border-bottom-success");
+        }
+        return valid;
     }
 });
