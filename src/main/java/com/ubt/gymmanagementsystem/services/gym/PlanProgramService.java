@@ -15,7 +15,9 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -123,9 +125,11 @@ public class PlanProgramService {
             try {
                 File file = ResourceUtils.getFile("classpath:planProgramReport/jasper_report.jrxml");
                 JasperReport report = JasperCompileManager.compileReport(file.getAbsolutePath());
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 HashMap<String, Object> parameters = new HashMap<String, Object>();
 
                 parameters.put("person", person.getFirstName() + " " + person.getLastName());
+                parameters.put("date", simpleDateFormat.format(new Date()));
 
                 ArrayList<HashMap<String, String>> list = new ArrayList();
                 for (PlanProgram planProgram : planPrograms) {

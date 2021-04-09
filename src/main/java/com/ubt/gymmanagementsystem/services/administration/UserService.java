@@ -1,21 +1,28 @@
 package com.ubt.gymmanagementsystem.services.administration;
 
+import java.util.Base64;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import com.ubt.gymmanagementsystem.configurations.exceptions.DatabaseException;
+import com.ubt.gymmanagementsystem.entities.administration.EmailNotification;
 import com.ubt.gymmanagementsystem.entities.administration.Role;
 import com.ubt.gymmanagementsystem.entities.administration.User;
+import com.ubt.gymmanagementsystem.entities.administration.UserRegistrationEmailModel;
 import com.ubt.gymmanagementsystem.entities.administration.dto.UserDTO;
 import com.ubt.gymmanagementsystem.entities.gym.Person;
 import com.ubt.gymmanagementsystem.repositories.administration.UserRepository;
 import com.ubt.gymmanagementsystem.services.gym.PersonService;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -32,6 +39,12 @@ public class UserService implements UserDetailsService {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private EmailService emailService;
+
+    @Value("${spring.mail.username}")
+    private String senderEmail;
+
     public List<User> getAll() {
         return userRepository.findAll();
     }
@@ -47,6 +60,40 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+    public UserDetails loadUserByEmailAndPassword(String email, String password) throws UsernameNotFoundException {
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        User user = userRepository.findByEmail(email);
+
+        if (user == null)
+            throw new UsernameNotFoundException(email);
+
+        boolean isPasswordMatch = passwordEncoder.matches(password, user.getPassword());
+        return isPasswordMatch ? user : null;
+    }
+
+    public boolean updatePassword(String email, String password) {
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encryptedPassword = passwordEncoder.encode(password);
+        User user = userRepository.findByEmail(email);
+        user.setPassword(encryptedPassword);
+        userRepository.save(user);
+        return true;
+    }
+
+    public boolean activateUser(String email) {
+
+        User user = userRepository.findByEmail(email);
+        user.setAccountNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setCredentialsNonExpired(true);
+        user.setEnabled(true);
+        userRepository.save(user);
+        return true;
+    }
+
     public List<User> getAllEnabled(){
         return userRepository.findAllByEnabled(true);
     }
@@ -57,13 +104,38 @@ public class UserService implements UserDetailsService {
 
     public boolean save(UserDTO userDTO) throws DatabaseException {
 
+        String randomPassword = RandomStringUtils.randomAlphanumeric(8);
+
+        String encodedPassword = Base64.getEncoder().encodeToString(randomPassword.getBytes());
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encryptedPassword = encoder.encode(randomPassword);
+
         Person person = personService.getById(userDTO.getPersonId());
         Role role = roleService.getById(userDTO.getRoleId());
-        User user = User.builder().username(userDTO.getUsername()).email(userDTO.getEmail()).person(person).role(role).enabled(true).build();
+        User user = User.builder().username(userDTO.getUsername()).email(userDTO.getEmail()).person(person).role(role)
+                .password(encryptedPassword).enabled(false).build();
         if(StringUtils.isNotBlank(user.getUsername()) && StringUtils.isNotBlank(user.getEmail())
                 && user.getPerson() != null && user.getRole() != null) {
             try {
                 userRepository.save(user);
+
+                final UserRegistrationEmailModel userRegistrationEmailModel = UserRegistrationEmailModel
+                        .builder()
+                        .firstName(user.getPerson().getFirstName())
+                        .lastName(user.getPerson().getLastName())
+                        .url("http://localhost:8080/welcome/"+encodedPassword)
+                        .build();
+
+                final EmailNotification emailNotification = EmailNotification
+                        .builder()
+                        .sender(senderEmail)
+                        .receiver(user.getEmail())
+                        .subject("Register")
+                        .content(userRegistrationEmailModel)
+                        .build();
+
+                emailService.sendEmail(emailNotification);
+
                 return true;
             }catch (Exception e) {
                 throw new DatabaseException("duplicate");
