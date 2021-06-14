@@ -1,1 +1,1 @@
-# gym-management-system
+# learn-by-your-choice

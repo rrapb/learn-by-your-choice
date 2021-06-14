@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{index.html}">
+<section layout:fragment="content">
+    <!-- Page Heading -->
+
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Add Course Material Form</h1>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row justify-content-center">
+        <div class="col-lg-6 card shadow mb-4">
+
+            <div class="card-header py-3">
+                <div class="col-12 alert alert-danger" th:hidden="${failed == null || !failed}" id="alert">
+                    Course Material failed to save, fields should be filled!
+                </div>
+                <div class="col-12 alert alert-danger" th:hidden="${failed == null || !failed}" id="fileSizeAlert">
+                    File size should not exceed 50 MB!
+                </div>
+                <h6 class="m-0 font-weight-bold text-dark">Add course material</h6>
+            </div>
+            <div class="card-body">
+                <form id="addCourseMaterial">
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="name">Name</label>
+                            <input id="name" name="name" class="form-control form-control-user" placeholder="Enter Course Material name..." th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="fileDiv">File</label>
+                            <div class="input-group" id="fileDiv">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                                </div>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="file" name="file" aria-describedby="inputGroupFileAddon01" accept="image/jpeg, image/png, video/mp4,video/x-m4v,video/*, audio/x-m4a,audio/*, application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf ">
+                                    <label class="custom-file-label" for="file">Choose file</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="courseId">Course</label>
+                            <select id="courseId" name="courseId" class="form-control form-control-user" placeholder="Select Course..." th:classappend="${failed != null && failed} ? 'border-bottom-danger' : ''" required>
+                                <option th:each="course : ${courses}"
+                                        th:value="${course.getId()}"
+                                        th:utext="${course.getName()}"
+                                        th:selected="${course.getId() == selectedCourse.getId()}"/>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button id="submitButton" class="btn btn-dark">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="spinner" hidden=""></span>
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/lbyc/courseMaterials/addCourseMaterial.js}"></script>
+</th:block>
+</html>

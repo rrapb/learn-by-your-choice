@@ -8,9 +8,9 @@
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/index">
             <div class="sidebar-brand-icon rotate-n-15">
-                <i class="fas fa-dumbbell"></i>
+                <i class="fas fa-book"></i>
             </div>
-            <div class="sidebar-brand-text mx-3">GymMS</div>
+            <div class="sidebar-brand-text mx-3">LBYC</div>
         </a>
 
         <!-- Divider -->
@@ -66,7 +66,7 @@
 
         <!-- Heading -->
         <div class="sidebar-heading">
-            Gym
+            LBYC
         </div>
 
         <!-- Nav Item - Persons Collapse Menu -->
@@ -84,51 +84,20 @@
             </div>
         </li>
 
-        <!-- Nav Item - Categories Collapse Menu -->
-        <li class="nav-item" sec:authorize="hasAuthority('READ_CATEGORY')">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCategories" aria-expanded="true" aria-controls="collapseCategories">
-                <i class="fas fa-fw fa-layer-group"></i>
-                <span>Categories</span>
+        <!-- Nav Item - Courses Collapse Menu -->
+        <li class="nav-item" sec:authorize="hasAuthority('READ_COURSE')">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCourses" aria-expanded="true" aria-controls="collapseCourses">
+                <i class="fas fa-fw fa-book-open"></i>
+                <span>Courses</span>
             </a>
-            <div id="collapseCategories" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div id="collapseCourses" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Manage categories:</h6>
-                    <a class="collapse-item" href="/addCategory" sec:authorize="hasAuthority('WRITE_CATEGORY')">Add category</a>
-                    <a class="collapse-item" href="/categories" sec:authorize="hasAuthority('READ_CATEGORY')">List categories</a>
+                    <h6 class="collapse-header">Manage Courses:</h6>
+                    <a class="collapse-item" href="/addCourse" sec:authorize="hasAuthority('WRITE_COURSE')">Add course</a>
+                    <a class="collapse-item" href="/courses" sec:authorize="hasAuthority('READ_COURSE')">List courses</a>
                 </div>
             </div>
         </li>
-
-        <!-- Nav Item - Tools Collapse Menu -->
-        <li class="nav-item" sec:authorize="hasAuthority('READ_TOOL')">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTools" aria-expanded="true" aria-controls="collapseTools">
-                <i class="fas fa-fw fa-tools"></i>
-                <span>Tools</span>
-            </a>
-            <div id="collapseTools" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Manage tools:</h6>
-                    <a class="collapse-item" href="/addTool" sec:authorize="hasAuthority('WRITE_TOOL')">Add tool</a>
-                    <a class="collapse-item" href="/tools" sec:authorize="hasAuthority('READ_TOOL')">List tools</a>
-                </div>
-            </div>
-        </li>
-
-        <!-- Nav Item - PlanPrograms Collapse Menu -->
-        <li class="nav-item" sec:authorize="hasAuthority('READ_PLAN_PROGRAM')">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePlanPrograms" aria-expanded="true" aria-controls="collapsePlanPrograms">
-                <i class="fas fa-fw fa-tasks"></i>
-                <span>Plan Programs</span>
-            </a>
-            <div id="collapsePlanPrograms" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Manage plan programs:</h6>
-                    <a class="collapse-item" href="/addPlanProgram" sec:authorize="hasAuthority('WRITE_PLAN_PROGRAM')">Add plan program</a>
-                    <a class="collapse-item" href="/planPrograms" sec:authorize="hasAuthority('READ_PLAN_PROGRAM')">List plan programs</a>
-                </div>
-            </div>
-        </li>
-
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
 

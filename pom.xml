@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.ubt</groupId>
-    <artifactId>gym-management-system</artifactId>
+    <artifactId>learn-by-your-choice</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>gym-management-system</name>
-    <description>Gym Management System</description>
+    <name>learn-by-your-choice</name>
+    <description>Learn By Your Choice</description>
     <properties>
         <java.version>1.8</java.version>
     </properties>
@@ -68,11 +68,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.12.0</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.jasperreports</groupId>
-            <artifactId>jasperreports</artifactId>
-            <version>6.16.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

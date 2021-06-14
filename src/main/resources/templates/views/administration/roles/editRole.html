@@ -83,27 +83,27 @@
                     <div class="form-group">
                         <div class="form-check-inline">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="true" id="viewTools" name="viewTools" th:checked="${roleDTO.isViewTools()}">
-                                <label class="form-check-label" for="viewTools">
-                                    View Tools
+                                <input class="form-check-input" type="checkbox" value="true" id="viewCourses" name="viewCourses" th:checked="${roleDTO.isViewCourses()}">
+                                <label class="form-check-label" for="viewCourses">
+                                    View Courses
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="true" id="addTools" name="addTools" th:checked="${roleDTO.isAddTools()}">
-                                <label class="form-check-label" for="addTools">
-                                    Add & Edit Tools
+                                <input class="form-check-input" type="checkbox" value="true" id="addCourses" name="addCourses" th:checked="${roleDTO.isAddCourses()}">
+                                <label class="form-check-label" for="addCourses">
+                                    Add & Edit Courses
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="true" id="viewPlanPrograms" name="viewPlanPrograms" th:checked="${roleDTO.isViewPlanPrograms()}">
-                                <label class="form-check-label" for="viewPlanPrograms">
-                                    View Plan Programs
+                                <input class="form-check-input" type="checkbox" value="true" id="viewMaterials" name="viewMaterials" th:checked="${roleDTO.isViewMaterials()}">
+                                <label class="form-check-label" for="viewMaterials">
+                                    View Materials
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="true" id="addPlanPrograms" name="addPlanPrograms" th:checked="${roleDTO.isAddPlanPrograms()}">
-                                <label class="form-check-label" for="addPlanPrograms">
-                                    Add & Edit Plan Programs
+                                <input class="form-check-input" type="checkbox" value="true" id="addMaterials" name="addMaterials" th:checked="${roleDTO.isAddMaterials()}">
+                                <label class="form-check-label" for="addMaterials">
+                                    Add & Edit Materials
                                 </label>
                             </div>
                         </div>
@@ -119,6 +119,6 @@
 </section>
 
 <th:block layout:fragment="script">
-    <script th:src="@{/js/gym/role/editRole.js}"></script>
+    <script th:src="@{/js/lbyc/role/editRole.js}"></script>
 </th:block>
 </html>
